@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор актов Wildberries</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .upload-section {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9ff;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            border-color: #764ba2;
+            background: #f0f1ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #764ba2;
+            background: #e8e9ff;
+            transform: scale(1.02);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .months-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .months-section.active {
+            display: block;
+        }
+
+        .months-title {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .month-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .month-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .month-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .buttons-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.active {
+            display: block;
+        }
+
+        .message.error {
+            background: #ffe0e0;
+            color: #c00;
+            border: 2px solid #ffc0c0;
+        }
+
+        .message.success {
+            background: #e0ffe0;
+            color: #0c0;
+            border: 2px solid #c0ffc0;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор актов Wildberries</h1>
+        <p class="subtitle">Загрузите XLSX файл с данными о продажах</p>
+
+        <div id="message" class="message"></div>
+        <div class="loader" id="loader"></div>
+
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon">📄</div>
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" accept=".xlsx" />
+                <label for="fileInput" class="file-input-label">
+                    Выбрать файл
+                </label>
+            </div>
+            <div class="file-name" id="fileName">Файл не выбран</div>
+        </div>
+
+        <div class="months-section" id="monthsSection">
+            <h2 class="months-title">Выберите месяц для генерации актов</h2>
+            <div id="monthsList"></div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const uploadSection = document.getElementById('uploadSection');
+        const monthsSection = document.getElementById('monthsSection');
+        const monthsList = document.getElementById('monthsList');
+        const loader = document.getElementById('loader');
+        const message = document.getElementById('message');
+
+        // Обработка выбора файла
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect();
+            }
+        });
+
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            fileName.textContent = file.name;
+            uploadFile(file);
+        }
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoader();
+            hideMessage();
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoader();
+
+                if (data.error) {
+                    showMessage(data.error, 'error');
+                } else {
+                    showMessage('Файл успешно загружен!', 'success');
+                    displayMonths(data.months);
+                }
+            })
+            .catch(error => {
+                hideLoader();
+                showMessage('Ошибка при загрузке файла: ' + error.message, 'error');
+            });
+        }
+
+        function displayMonths(months) {
+            monthsList.innerHTML = '';
+
+            months.forEach(month => {
+                const monthCard = document.createElement('div');
+                monthCard.className = 'month-card';
+
+                monthCard.innerHTML = `
+                    <div class="month-name">${month}</div>
+                    <div class="buttons-group">
+                        <a href="/generate/acceptance/${encodeURIComponent(month)}"
+                           class="btn btn-primary"
+                           download>
+                            Акт приема-передачи
+                        </a>
+                        <a href="/generate/services/${encodeURIComponent(month)}"
+                           class="btn btn-secondary"
+                           download>
+                            Акт услуг
+                        </a>
+                    </div>
+                `;
+
+                monthsList.appendChild(monthCard);
+            });
+
+            monthsSection.classList.add('active');
+        }
+
+        function showLoader() {
+            loader.classList.add('active');
+        }
+
+        function hideLoader() {
+            loader.classList.remove('active');
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = 'message active ' + type;
+        }
+
+        function hideMessage() {
+            message.className = 'message';
+        }
+    </script>
+</body>
+</html>
