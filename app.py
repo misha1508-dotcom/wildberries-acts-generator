@@ -9,8 +9,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'wildberries_secret_key_change_in_production'
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['GENERATED_FOLDER'] = 'generated'
+app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
+app.config['GENERATED_FOLDER'] = '/tmp/generated'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Создаем необходимые папки
