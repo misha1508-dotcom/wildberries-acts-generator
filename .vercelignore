@@ -1,0 +1,12 @@
+app.py
+desktop_app.py
+gui_app.py
+start.py
+requirements.txt
+templates/
+uploads/
+generated/
+static/
+react-app/
+*.pyc
+__pycache__/
