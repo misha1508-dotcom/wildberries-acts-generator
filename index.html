@@ -18,12 +18,77 @@
 
     const ActsGenerator = () => {
       const [file, setFile] = useState(null);
+      const [brandsFile, setBrandsFile] = useState(null);
+      const [brandsMap, setBrandsMap] = useState({});
       const [months, setMonths] = useState([]);
       const [selectedMonth, setSelectedMonth] = useState('');
       const [workbook, setWorkbook] = useState(null);
       const [loading, setLoading] = useState(false);
       const [acceptanceDate, setAcceptanceDate] = useState('');
       const [servicesDate, setServicesDate] = useState('');
+
+      const handleBrandsFileUpload = async (e) => {
+        const uploadedFile = e.target.files[0];
+        if (!uploadedFile) return;
+
+        setBrandsFile(uploadedFile);
+
+        try {
+          const data = await uploadedFile.arrayBuffer();
+          const wb = XLSX.read(data);
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+
+          const rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+          let headerRowIndex = 0;
+          for (let i = 0; i < Math.min(10, rawData.length); i++) {
+            const row = rawData[i];
+            if (row && row.some(cell => String(cell).includes('Бренд')) &&
+                row.some(cell => String(cell).includes('Артикул WB'))) {
+              headerRowIndex = i;
+              break;
+            }
+          }
+
+          const headers = rawData[headerRowIndex];
+          const brandColIndex = headers.findIndex(h => String(h).includes('Бренд'));
+          const articleColIndex = headers.findIndex(h => String(h).includes('Артикул WB'));
+          const sellerArticleColIndex = headers.findIndex(h => String(h).includes('Артикул продавца'));
+
+          console.log('Строка заголовков:', headerRowIndex);
+          console.log('Индекс колонки Бренд:', brandColIndex);
+          console.log('Индекс колонки Артикул WB:', articleColIndex);
+          console.log('Индекс колонки Артикул продавца:', sellerArticleColIndex);
+
+          const map = {};
+          for (let i = headerRowIndex + 1; i < rawData.length; i++) {
+            const row = rawData[i];
+            if (!row) continue;
+
+            const wbArticle = row[articleColIndex];
+            const brand = row[brandColIndex];
+            const sellerArticle = sellerArticleColIndex >= 0 ? row[sellerArticleColIndex] : '';
+
+            if (wbArticle) {
+              const articleStr = String(wbArticle).trim();
+              if (!map[articleStr]) {
+                map[articleStr] = {
+                  brand: brand ? String(brand).trim() : '',
+                  sellerArticle: sellerArticle ? String(sellerArticle).trim() : ''
+                };
+              }
+            }
+          }
+
+          setBrandsMap(map);
+          console.log('Загружено уникальных артикулов с брендами:', Object.keys(map).length);
+
+          alert(`Загружено ${Object.keys(map).length} уникальных артикулов с брендами`);
+        } catch (error) {
+          console.error('Ошибка чтения файла брендов:', error);
+          alert('Ошибка при чтении файла брендов: ' + error.message);
+        }
+      };
 
       const handleFileUpload = async (e) => {
         const uploadedFile = e.target.files[0];
@@ -69,22 +134,35 @@
       ];
 
       const extractBrand = (wbArticle, month) => {
+        const articleStr = String(wbArticle);
+
         // Проверяем, начиная с мая ли месяц
         const isApril24 = month && month.toLowerCase().includes('апр') && month.includes('24');
         if (isApril24) {
           return '';
         }
 
-        // Проверяем, есть ли артикул в списке
-        const articleStr = String(wbArticle);
-        if (!brandArticles.includes(articleStr)) {
-          return '';
+        // Сначала проверяем специальный список из 119 артикулов
+        if (brandArticles.includes(articleStr)) {
+          const hash = articleStr.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const brands = ['Lithium', 'Magnet', '—'];
+          return brands[hash % 3];
         }
 
-        // Случайный выбор бренда на основе артикула (чтобы был стабильный для одного артикула)
-        const hash = articleStr.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const brands = ['Lithium', 'Magnet', '—'];
-        return brands[hash % 3];
+        // Затем проверяем загруженную таблицу брендов
+        if (brandsMap[articleStr] && brandsMap[articleStr].brand) {
+          return brandsMap[articleStr].brand;
+        }
+
+        return '';
+      };
+
+      const getSellerArticleFromBrandsMap = (wbArticle) => {
+        const articleStr = String(wbArticle);
+        if (brandsMap[articleStr] && brandsMap[articleStr].sellerArticle) {
+          return brandsMap[articleStr].sellerArticle;
+        }
+        return '';
       };
 
       const extractServiceCost = (artikul) => {
@@ -95,33 +173,52 @@
         const sheet = workbook.Sheets[selectedMonth];
         const data = XLSX.utils.sheet_to_json(sheet);
 
+        console.log('Всего строк в Excel:', data.length);
+        console.log('Размер brandsMap:', Object.keys(brandsMap).length);
+
         const itemsMap = {};
 
-        data
-          .filter(row => row['Статус задания'] === 'Продано')
-          .forEach(row => {
-            const wbArticle = row['Артикул Wildberries'] || '';
-            const price = parseFloat(row['Стоимость']) || 0;
-            const reducedPrice = price * 0.65;
-            const artikul = row['Артикул продавца'] || '';
+        const soldItems = data.filter(row => row['Статус задания'] === 'Продано');
+        console.log('Строк со статусом Продано:', soldItems.length);
 
-            if (!itemsMap[wbArticle]) {
-              itemsMap[wbArticle] = {
-                name: row['Наименование'] || '',
-                quantity: 0,
-                brand: extractBrand(wbArticle, selectedMonth),
-                color: row['Цвет'] || '',
-                sku: wbArticle,
-                price: reducedPrice,
-                totalPrice: 0
-              };
+        soldItems.forEach(row => {
+          const wbArticle = row['Артикул Wildberries'] || '';
+          const price = parseFloat(row['Стоимость']) || 0;
+          const reducedPrice = price * 0.65;
+          const sellerArticleFromExcel = row['Артикул продавца'] || '';
+
+          if (!itemsMap[wbArticle]) {
+            const sellerArticleFromBrands = getSellerArticleFromBrandsMap(wbArticle);
+            const brand = extractBrand(wbArticle, selectedMonth);
+
+            if (Object.keys(itemsMap).length < 3) {
+              console.log('Артикул WB:', wbArticle);
+              console.log('Бренд из brandsMap:', brandsMap[String(wbArticle)]);
+              console.log('Итоговый бренд:', brand);
+              console.log('Артикул продавца из Excel:', sellerArticleFromExcel);
+              console.log('Артикул продавца из brandsMap:', sellerArticleFromBrands);
             }
 
-            itemsMap[wbArticle].quantity += 1;
-            itemsMap[wbArticle].totalPrice += reducedPrice;
-          });
+            itemsMap[wbArticle] = {
+              name: row['Наименование'] || '',
+              quantity: 0,
+              brand: brand,
+              color: row['Цвет'] || '',
+              sku: wbArticle,
+              sellerArticle: sellerArticleFromBrands || sellerArticleFromExcel,
+              price: reducedPrice,
+              totalPrice: 0
+            };
+          }
 
-        return Object.values(itemsMap).sort((a, b) => a.sku.localeCompare(b.sku));
+          itemsMap[wbArticle].quantity += 1;
+          itemsMap[wbArticle].totalPrice += reducedPrice;
+        });
+
+        const items = Object.values(itemsMap).sort((a, b) => a.sku.localeCompare(b.sku));
+        console.log('Итого уникальных товаров:', items.length);
+
+        return items;
       };
 
       const generateAcceptanceAct = () => {
@@ -411,6 +508,25 @@
               </p>
 
               <div className="mb-8">
+                <h3 className="font-semibold text-gray-800 mb-3">📋 Файл с брендами (таблица артикулов)</h3>
+                <label className="block mb-4">
+                  <div className="border-2 border-dashed border-green-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors cursor-pointer bg-green-50">
+                    <input
+                      type="file"
+                      accept=".xlsx,.xls"
+                      onChange={handleBrandsFileUpload}
+                      className="hidden"
+                    />
+                    <p className="text-gray-700 font-medium">
+                      {brandsFile ? `✅ ${brandsFile.name} (${Object.keys(brandsMap).length} брендов)` : 'Нажмите для выбора файла брендов'}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-2">Файл с колонками "Бренд" и "Артикул WB"</p>
+                  </div>
+                </label>
+              </div>
+
+              <div className="mb-8">
+                <h3 className="font-semibold text-gray-800 mb-3">📊 Excel файл с поставками</h3>
                 <label className="block mb-4">
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-indigo-500 transition-colors cursor-pointer">
                     <input
