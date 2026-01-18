@@ -592,7 +592,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.4.2
+                  v2.4.3
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -627,29 +627,26 @@
                       onChange={handleFileUpload}
                       className="hidden"
                     />
-                    <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
+                    {loading ? (
+                      <div className="inline-block animate-spin-slow mb-4">
+                        <svg width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="100" cy="100" r="90" fill="#00A7E1" />
+                          <text x="100" y="115" fontSize="32" fontWeight="bold" fontFamily="Arial, sans-serif" fill="white" textAnchor="middle">Makita</text>
+                          <circle cx="100" cy="100" r="85" fill="none" stroke="white" strokeWidth="3" />
+                        </svg>
+                      </div>
+                    ) : (
+                      <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                    )}
                     <p className="text-gray-700 font-medium">
-                      {file ? file.name : 'Нажмите для выбора файла'}
+                      {loading ? 'Загрузка файла...' : (file ? file.name : 'Нажмите для выбора файла')}
                     </p>
-                    <p className="text-gray-500 text-sm mt-2">XLSX или XLS</p>
+                    {!loading && <p className="text-gray-500 text-sm mt-2">XLSX или XLS</p>}
                   </div>
                 </label>
               </div>
-
-              {loading && (
-                <div className="text-center py-8">
-                  <div className="inline-block animate-spin-slow">
-                    <svg width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="100" cy="100" r="90" fill="#00A7E1" />
-                      <text x="100" y="115" fontSize="32" fontWeight="bold" fontFamily="Arial, sans-serif" fill="white" textAnchor="middle">Makita</text>
-                      <circle cx="100" cy="100" r="85" fill="none" stroke="white" strokeWidth="3" />
-                    </svg>
-                  </div>
-                  <p className="mt-4 text-gray-600 font-semibold">Загрузка файла...</p>
-                </div>
-              )}
 
               {months.length > 0 && !loading && (
                 <>
@@ -736,6 +733,15 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-fuchsia-500 pl-4">
+                      <h4 className="font-bold text-fuchsia-700 mb-1">v2.4.3 - 19.01.2026 02:00 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Логотип Makita теперь отображается внутри блока загрузки файла</li>
+                        <li>Анимация заменяет иконку загрузки вместо отображения отдельно</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-pink-500 pl-4">
                       <h4 className="font-bold text-pink-700 mb-1">v2.4.2 - 19.01.2026 01:45 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
