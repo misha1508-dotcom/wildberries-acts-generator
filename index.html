@@ -311,14 +311,21 @@
       body { margin: 1cm; }
     }
     body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10px; }
-    th, td { border: 1px solid black; padding: 6px; }
-    th { background-color: #f0f0f0; font-weight: bold; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 7px; }
+    th, td { border: 1px solid black; padding: 1px 3px; }
+    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
     p { margin: 10px 0; }
     .date-left { text-align: left; margin-bottom: 20px; }
+    td:nth-child(1) { width: 3%; }
+    td:nth-child(2) { width: 35%; }
+    td:nth-child(3) { width: 7%; }
+    td:nth-child(4) { width: 12%; }
+    td:nth-child(5) { width: 15%; }
+    td:nth-child(6) { width: 15%; }
+    td:nth-child(7) { width: 13%; }
   </style>
 </head>
 <body>
@@ -444,14 +451,22 @@
   <title>Акт оказания услуг</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-    th, td { border: 1px solid black; padding: 10px; }
-    th { background-color: #f0f0f0; font-weight: bold; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 7px; }
+    th, td { border: 1px solid black; padding: 1px 3px; }
+    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
     .date-left { text-align: left; margin-bottom: 20px; }
     p { margin: 10px 0; }
+    td:nth-child(1) { width: 3%; }
+    td:nth-child(2) { width: 28%; }
+    td:nth-child(3) { width: 6%; }
+    td:nth-child(4) { width: 12%; }
+    td:nth-child(5) { width: 13%; }
+    td:nth-child(6) { width: 13%; }
+    td:nth-child(7) { width: 13%; }
+    td:nth-child(8) { width: 12%; }
   </style>
 </head>
 <body>
@@ -566,7 +581,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.3.1
+                  v2.3.2
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -704,6 +719,16 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-sky-500 pl-4">
+                      <h4 className="font-bold text-sky-700 mb-1">v2.3.2 - 19.01.2026 01:30 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Оптимизирована ширина столбцов таблиц для лучшей читаемости</li>
+                        <li>Размер шрифта таблиц уменьшен до 7px в стилях документа</li>
+                        <li>Добавлены фиксированные ширины столбцов в процентах</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-cyan-500 pl-4">
                       <h4 className="font-bold text-cyan-700 mb-1">v2.3.1 - 19.01.2026 01:25 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
