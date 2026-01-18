@@ -293,13 +293,13 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 6px; text-align: right; font-size: 10px;">${item.totalPrice.toFixed(2)}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: right; font-size: 8px;">${item.totalPrice.toFixed(2)}</td>
           </tr>
         `).join('');
 
@@ -352,8 +352,8 @@
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="6" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
-      <td style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>${totalPrice.toFixed(2)}</strong></td>
+      <td colspan="6" style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>Итого</strong></td>
+      <td style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>${totalPrice.toFixed(2)}</strong></td>
     </tr>
   </table>
   <br>
@@ -402,7 +402,12 @@
 </body>
 </html>`;
 
-        openInGoogleDocs(html, `Акт_приема-передачи_${acceptanceDate}`);
+        // Формируем название: "Акт ПП (месяц год) ИП Гаряев"
+        const dateObj = new Date(acceptanceDate);
+        const year = dateObj.getFullYear();
+        const fileName = `Акт ПП (${selectedMonth} ${year}) ИП Гаряев`;
+
+        openInGoogleDocs(html, fileName);
       };
 
       const generateServicesAct = () => {
@@ -424,14 +429,14 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sku}</td>
-            <td style="border: 1px solid black; padding: 6px; text-align: right; font-size: 10px;"></td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sku}</td>
+            <td style="border: 1px solid black; padding: 2px 4px; text-align: right; font-size: 8px;"></td>
           </tr>
         `).join('');
 
@@ -479,8 +484,8 @@
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="7" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
-      <td style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"></td>
+      <td colspan="7" style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>Итого</strong></td>
+      <td style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"></td>
     </tr>
   </table>
   <br>
@@ -527,7 +532,12 @@
 </body>
 </html>`;
 
-        openInGoogleDocs(html, `Акт_оказания_услуг_${servicesDate}`);
+        // Формируем название: "Акт ОУ (месяц год) ИП Гаряев"
+        const dateObj = new Date(servicesDate);
+        const year = dateObj.getFullYear();
+        const fileName = `Акт ОУ (${selectedMonth} ${year}) ИП Гаряев`;
+
+        openInGoogleDocs(html, fileName);
       };
 
       const openInGoogleDocs = (html, title) => {
@@ -543,15 +553,8 @@
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(link.href);
-
-          setTimeout(() => {
-            alert(`✅ DOCX файл скачан: ${title}.docx
-
-Готово! Документ готов к использованию.`);
-          }, 100);
         } catch (error) {
           console.error('Ошибка:', error);
-          alert('Произошла ошибка при создании файла. Попробуйте ещё раз.');
         }
       };
 
@@ -564,7 +567,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.2.1
+                  v2.3.0
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -702,6 +705,22 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-teal-500 pl-4">
+                      <h4 className="font-bold text-teal-700 mb-1">v2.3.0 - 19.01.2026 01:15 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Новые шаблоны названий файлов: "Акт ОУ (месяц год) ИП Гаряев" и "Акт ПП (месяц год) ИП Гаряев"</li>
+                      </ul>
+                      <p className="font-semibold text-gray-600 mb-2 mt-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Уменьшены таблицы в актах (шрифт 8px, отступы 2px 4px)</li>
+                      </ul>
+                      <p className="font-semibold text-gray-600 mb-2 mt-2">Удалено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Убраны всплывающие уведомления после генерации файлов</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-orange-500 pl-4">
                       <h4 className="font-bold text-orange-700 mb-1">v2.2.1 - 19.01.2026 01:00 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
