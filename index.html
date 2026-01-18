@@ -97,11 +97,8 @@
 
           setBrandsMap(map);
           console.log('Загружено уникальных артикулов с брендами:', Object.keys(map).length);
-
-          alert(`Загружено ${Object.keys(map).length} уникальных артикулов с брендами`);
         } catch (error) {
           console.error('Ошибка чтения файла брендов:', error);
-          alert('Ошибка при чтении файла брендов: ' + error.message);
         }
       };
 
@@ -293,13 +290,13 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: right; font-size: 8px;">${item.totalPrice.toFixed(2)}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: center; font-size: 7px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: center; font-size: 7px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: right; font-size: 7px;">${item.totalPrice.toFixed(2)}</td>
           </tr>
         `).join('');
 
@@ -352,8 +349,8 @@
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="6" style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>Итого</strong></td>
-      <td style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>${totalPrice.toFixed(2)}</strong></td>
+      <td colspan="6" style="text-align: right; font-weight: bold; padding: 1px 3px; font-size: 7px;"><strong>Итого</strong></td>
+      <td style="text-align: right; font-weight: bold; padding: 1px 3px; font-size: 7px;"><strong>${totalPrice.toFixed(2)}</strong></td>
     </tr>
   </table>
   <br>
@@ -429,14 +426,14 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size: 8px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; font-size: 8px;">${item.sku}</td>
-            <td style="border: 1px solid black; padding: 2px 4px; text-align: right; font-size: 8px;"></td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: center; font-size: 7px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: center; font-size: 7px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; font-size: 7px;">${item.sku}</td>
+            <td style="border: 1px solid black; padding: 1px 3px; text-align: right; font-size: 7px;"></td>
           </tr>
         `).join('');
 
@@ -453,10 +450,12 @@
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
+    .date-left { text-align: left; margin-bottom: 20px; }
     p { margin: 10px 0; }
   </style>
 </head>
 <body>
+  <p class="date-left"><strong>${servicesDate}</strong></p>
   <p class="right-text">Приложение № 2</p>
   <br>
   <p class="right-text">к договору по оказанию транспортных услуг</p>
@@ -484,8 +483,8 @@
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="7" style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"><strong>Итого</strong></td>
-      <td style="text-align: right; font-weight: bold; padding: 2px 4px; font-size: 8px;"></td>
+      <td colspan="7" style="text-align: right; font-weight: bold; padding: 1px 3px; font-size: 7px;"><strong>Итого</strong></td>
+      <td style="text-align: right; font-weight: bold; padding: 1px 3px; font-size: 7px;"></td>
     </tr>
   </table>
   <br>
@@ -567,7 +566,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.3.0
+                  v2.3.1
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -705,6 +704,22 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-cyan-500 pl-4">
+                      <h4 className="font-bold text-cyan-700 mb-1">v2.3.1 - 19.01.2026 01:25 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Дата в акт оказания услуг</li>
+                      </ul>
+                      <p className="font-semibold text-gray-600 mb-2 mt-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Еще больше уменьшены таблицы (шрифт 7px, отступы 1px 3px)</li>
+                      </ul>
+                      <p className="font-semibold text-gray-600 mb-2 mt-2">Удалено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Убран alert после загрузки файла с артикулами</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-teal-500 pl-4">
                       <h4 className="font-bold text-teal-700 mb-1">v2.3.0 - 19.01.2026 01:15 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
