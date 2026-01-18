@@ -1,11 +1,12 @@
 {
   "name": "wildberries-acts-generator",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Wildberries Acts Generator - Static React App",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "echo 'No build needed - static site'"
+    "build": "echo 'No build needed - static site'",
+    "deploy": "npx vercel --prod --yes"
   },
   "dependencies": {
     "vercel": "^50.4.5"

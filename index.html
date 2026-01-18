@@ -221,6 +221,42 @@
         return items;
       };
 
+      const validateSellerArticles = (items) => {
+        const inconsistencies = [];
+
+        items.forEach(item => {
+          if (item.sellerArticle) {
+            const duplicates = items.filter(i =>
+              i.sellerArticle === item.sellerArticle && i.sku !== item.sku
+            );
+
+            if (duplicates.length > 0) {
+              const skus = [item.sku, ...duplicates.map(d => d.sku)].join(', ');
+              if (!inconsistencies.some(inc => inc.sellerArticle === item.sellerArticle)) {
+                inconsistencies.push({
+                  sellerArticle: item.sellerArticle,
+                  skus: skus
+                });
+              }
+            }
+          }
+        });
+
+        if (inconsistencies.length > 0) {
+          const message = 'Обнаружены несоответствия в артикулах продавца:\n\n' +
+            inconsistencies.map(inc =>
+              `Артикул продавца "${inc.sellerArticle}" используется для артикулов WB: ${inc.skus}`
+            ).join('\n\n') +
+            '\n\nВозможно, это ошибка в данных. Проверьте файл с брендами или Excel файл.';
+
+          if (!confirm(message + '\n\nПродолжить генерацию актов?')) {
+            return false;
+          }
+        }
+
+        return true;
+      };
+
       const generateAcceptanceAct = () => {
         if (!workbook || !selectedMonth) {
           alert('Ошибка: не выбран Excel файл или месяц');
@@ -233,6 +269,11 @@
         }
 
         const items = extractItemsData(selectedMonth);
+
+        if (!validateSellerArticles(items)) {
+          return;
+        }
+
         const totalPrice = items.reduce((sum, item) => sum + item.totalPrice, 0);
 
         const tableRows = items.map((item, index) => `
@@ -241,6 +282,7 @@
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.name}</td>
             <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${item.quantity}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sellerArticle || ''}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.color}</td>
             <td style="border: 1px solid black; padding: 6px; text-align: right; font-size: 10px;">${item.totalPrice.toFixed(2)}</td>
           </tr>
@@ -283,18 +325,19 @@
   <table>
     <tr>
       <th rowspan="2">№</th>
-      <th colspan="4">Товар</th>
+      <th colspan="5">Товар</th>
       <th rowspan="2">Стоимость товара, руб.</th>
     </tr>
     <tr>
       <th>Наименование товара</th>
       <th>Количество, шт.</th>
       <th>Бренд</th>
+      <th>Артикул продавца</th>
       <th>Цвет</th>
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="5" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
+      <td colspan="6" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
       <td style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>${totalPrice.toFixed(2)}</strong></td>
     </tr>
   </table>
@@ -360,12 +403,17 @@
 
         const items = extractItemsData(selectedMonth);
 
+        if (!validateSellerArticles(items)) {
+          return;
+        }
+
         const tableRows = items.map((item, index) => `
           <tr>
             <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${index + 1}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.name}</td>
             <td style="border: 1px solid black; padding: 6px; text-align: center; font-size: 10px;">${item.quantity}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sellerArticle || ''}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.color}</td>
             <td style="border: 1px solid black; padding: 6px; font-size: 10px;">${item.sku}</td>
             <td style="border: 1px solid black; padding: 6px; text-align: right; font-size: 10px;"></td>
@@ -403,19 +451,20 @@
   <table>
     <tr>
       <th rowspan="2">№</th>
-      <th colspan="5">Товар</th>
+      <th colspan="6">Товар</th>
       <th rowspan="2">Стоимость услуг</th>
     </tr>
     <tr>
       <th>Наименование товара</th>
       <th>Количество, шт.</th>
       <th>Бренд</th>
+      <th>Артикул продавца</th>
       <th>Цвет</th>
       <th>SKU</th>
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="6" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
+      <td colspan="7" style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"><strong>Итого</strong></td>
       <td style="text-align: right; font-weight: bold; padding: 6px; font-size: 10px;"></td>
     </tr>
   </table>
