@@ -23,6 +23,17 @@
         display: none !important;
       }
     }
+    @keyframes spin-slow {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .animate-spin-slow {
+      animation: spin-slow 2s linear infinite;
+    }
   </style>
 </head>
 <body>
@@ -581,7 +592,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.3.2
+                  v2.4.0
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -629,8 +640,14 @@
 
               {loading && (
                 <div className="text-center py-8">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-                  <p className="mt-4 text-gray-600">Загрузка файла...</p>
+                  <div className="inline-block animate-spin-slow">
+                    <svg width="80" height="80" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="100" cy="100" r="90" fill="#00A7E1" />
+                      <text x="100" y="120" fontSize="60" fontWeight="bold" fontFamily="Arial, sans-serif" fill="white" textAnchor="middle">M</text>
+                      <circle cx="100" cy="100" r="85" fill="none" stroke="white" strokeWidth="3" />
+                    </svg>
+                  </div>
+                  <p className="mt-4 text-gray-600 font-semibold">Загрузка файла...</p>
                 </div>
               )}
 
@@ -719,6 +736,15 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-blue-600 pl-4">
+                      <h4 className="font-bold text-blue-700 mb-1">v2.4.0 - 19.01.2026 01:35 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Анимированный логотип Makita при загрузке файла с поставками</li>
+                        <li>Плавная анимация вращения (2 секунды на оборот)</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-sky-500 pl-4">
                       <h4 className="font-bold text-sky-700 mb-1">v2.3.2 - 19.01.2026 01:30 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
