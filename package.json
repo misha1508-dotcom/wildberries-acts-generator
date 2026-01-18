@@ -1,6 +1,6 @@
 {
   "name": "wildberries-acts-generator",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Wildberries Acts Generator - Static React App",
   "private": true,
   "type": "module",
