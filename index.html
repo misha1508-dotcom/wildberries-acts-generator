@@ -346,13 +346,13 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td>${index + 1}</td>
-            <td>${item.name}</td>
-            <td>${item.quantity}</td>
-            <td>${item.brand}</td>
-            <td>${item.sellerArticle || ''}</td>
-            <td>${item.color}</td>
-            <td>${item.totalPrice.toFixed(2)}</td>
+            <td style="font-size:8pt;text-align:center;">${index + 1}</td>
+            <td style="font-size:8pt;word-wrap:break-word;">${item.name}</td>
+            <td style="font-size:8pt;text-align:center;">${item.quantity}</td>
+            <td style="font-size:8pt;">${item.brand}</td>
+            <td style="font-size:8pt;">${item.sellerArticle || ''}</td>
+            <td style="font-size:8pt;">${item.color}</td>
+            <td style="font-size:8pt;text-align:right;">${item.totalPrice.toFixed(2)}</td>
           </tr>
         `).join('');
 
@@ -384,23 +384,23 @@
   <br>
   <p>1. В рамках исполнения договора по оказанию транспортных услуг и услуг Фулфилмента №11/3/24 от 11.03.2024 г. Заказчик передал, а Исполнитель принял следующий товар:</p>
   <br>
-  <table class="main-table">
+  <table width="450" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; table-layout: fixed;">
     <tr>
-      <th rowspan="2" width="3%">№</th>
-      <th colspan="5">Товар</th>
-      <th rowspan="2" width="13%">Стоимость, руб.</th>
+      <th width="15" rowspan="2" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">№</th>
+      <th colspan="5" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Товар</th>
+      <th width="55" rowspan="2" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Стоимость, руб.</th>
     </tr>
     <tr>
-      <th width="35%">Наименование</th>
-      <th width="7%">Кол-во</th>
-      <th width="15%">Бренд</th>
-      <th width="15%">Артикул</th>
-      <th width="12%">Цвет</th>
+      <th width="150" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Наименование</th>
+      <th width="30" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Кол-во</th>
+      <th width="65" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Бренд</th>
+      <th width="65" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Артикул</th>
+      <th width="55" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Цвет</th>
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="6" style="text-align: right;"><strong>Итого</strong></td>
-      <td style="text-align: right;"><strong>${totalPrice.toFixed(2)}</strong></td>
+      <td colspan="6" style="text-align: right;font-size:8pt;"><strong>Итого</strong></td>
+      <td style="text-align: right;font-size:8pt;"><strong>${totalPrice.toFixed(2)}</strong></td>
     </tr>
   </table>
   <br>
@@ -441,14 +441,14 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td>${index + 1}</td>
-            <td>${item.name}</td>
-            <td>${item.quantity}</td>
-            <td>${item.brand}</td>
-            <td>${item.sellerArticle || ''}</td>
-            <td>${item.color}</td>
-            <td>${item.sku}</td>
-            <td></td>
+            <td style="font-size:8pt;text-align:center;">${index + 1}</td>
+            <td style="font-size:8pt;word-wrap:break-word;">${item.name}</td>
+            <td style="font-size:8pt;text-align:center;">${item.quantity}</td>
+            <td style="font-size:8pt;">${item.brand}</td>
+            <td style="font-size:8pt;">${item.sellerArticle || ''}</td>
+            <td style="font-size:8pt;">${item.color}</td>
+            <td style="font-size:8pt;">${item.sku}</td>
+            <td style="font-size:8pt;"></td>
           </tr>
         `).join('');
 
@@ -480,24 +480,24 @@
   <br>
   <p>1. В рамках исполнения договора по оказанию транспортных услуг и услуг Фулфилмента №11/3/24 от 11.03.2024 г. Исполнитель, согласно сборочным заданиям, поставил на маркетплейс Wildberries следующие товары:</p>
   <br>
-  <table class="main-table">
+  <table width="450" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse; table-layout: fixed;">
     <tr>
-      <th rowspan="2" width="3%">№</th>
-      <th colspan="6">Товар</th>
-      <th rowspan="2" width="10%">Стоимость</th>
+      <th width="15" rowspan="2" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">№</th>
+      <th colspan="6" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Товар</th>
+      <th width="45" rowspan="2" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Стоимость</th>
     </tr>
     <tr>
-      <th width="28%">Наименование</th>
-      <th width="6%">Кол-во</th>
-      <th width="13%">Бренд</th>
-      <th width="14%">Артикул</th>
-      <th width="13%">Цвет</th>
-      <th width="13%">SKU</th>
+      <th width="120" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Наименование</th>
+      <th width="25" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Кол-во</th>
+      <th width="55" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Бренд</th>
+      <th width="55" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Артикул</th>
+      <th width="55" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">Цвет</th>
+      <th width="55" style="background-color:#f0f0f0;font-size:8pt;text-align:center;">SKU</th>
     </tr>
     ${tableRows}
     <tr>
-      <td colspan="7" style="text-align: right;"><strong>Итого</strong></td>
-      <td style="text-align: right;"></td>
+      <td colspan="7" style="text-align: right;font-size:8pt;"><strong>Итого</strong></td>
+      <td style="text-align: right;font-size:8pt;"></td>
     </tr>
   </table>
   <br>
@@ -546,7 +546,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.9.3
+                  v2.9.4
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -687,6 +687,18 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-pink-500 pl-4">
+                      <h4 className="font-bold text-pink-700 mb-1">v2.9.4 - 19.01.2026 05:30 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Кардинальное исправление таблиц:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Фиксированная ширина таблицы 450px вместо 100%</li>
+                        <li>HTML атрибуты width, border, cellpadding, cellspacing на таблице</li>
+                        <li>Инлайн-стили на всех ячейках для совместимости с Word</li>
+                        <li>Уменьшен шрифт до 8pt для лучшего размещения</li>
+                        <li>Добавлен table-layout: fixed</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-fuchsia-500 pl-4">
                       <h4 className="font-bold text-fuchsia-700 mb-1">v2.9.3 - 19.01.2026 05:20 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
