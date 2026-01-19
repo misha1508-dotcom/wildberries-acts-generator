@@ -580,17 +580,21 @@
 
       const openInGoogleDocs = (html, title) => {
         try {
-          // Конвертируем кириллицу в HTML entities
+          // Создаём временный элемент для предпросмотра
+          const previewWindow = window.open('', '_blank');
+          previewWindow.document.write(html);
+          previewWindow.document.close();
+
+          // Инструкция для пользователя
+          alert('Откроется новое окно с актом.\n\nДля сохранения в Word:\n1. Нажмите Ctrl+A (выделить всё)\n2. Нажмите Ctrl+C (скопировать)\n3. Откройте Word\n4. Нажмите Ctrl+V (вставить)\n5. Сохраните как DOCX');
+
+          return;
+
+          // Старый код (закомментирован)
+          /*
           const htmlEscaped = escapeHtmlForDocx(html);
-
-          // Для отладки - показываем первые 500 символов преобразованного HTML
           console.log('Первые 500 символов HTML:', htmlEscaped.substring(0, 500));
-          console.log('Проверка реквизитов (поиск ИНН):', htmlEscaped.includes('&#1048;&#1053;&#1053;') ? 'Кириллица преобразована' : 'Кириллица НЕ преобразована');
-
-          // Конвертируем HTML в DOCX
           const converted = htmlDocx.asBlob(htmlEscaped);
-
-          // Скачиваем DOCX файл
           const link = document.createElement('a');
           link.href = URL.createObjectURL(converted);
           link.download = `${title}.docx`;
@@ -598,9 +602,10 @@
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(link.href);
+          */
         } catch (error) {
-          console.error('Ошибка генерации DOCX:', error);
-          alert('Ошибка при генерации файла: ' + error.message);
+          console.error('Ошибка генерации:', error);
+          alert('Ошибка: ' + error.message);
         }
       };
 
@@ -613,7 +618,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.6.3
+                  v2.7.0
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -754,6 +759,15 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-amber-500 pl-4">
+                      <h4 className="font-bold text-amber-700 mb-1">v2.7.0 - 19.01.2026 03:10 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Акт открывается в новом окне для копирования в Word</li>
+                        <li>Обход проблем с кодировкой кириллицы в html-docx-js</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-rose-500 pl-4">
                       <h4 className="font-bold text-rose-700 mb-1">v2.6.3 - 19.01.2026 03:00 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
@@ -761,10 +775,6 @@
                         <li>Изменены единицы измерения с px на pt (points) для лучшей совместимости с Word</li>
                         <li>Высота строк уменьшена до 8pt (вместо 10.5px)</li>
                         <li>Размер шрифта изменен на 7pt</li>
-                      </ul>
-                      <p className="font-semibold text-gray-600 mb-2 mt-2">Добавлено:</p>
-                      <ul className="list-disc list-inside space-y-1">
-                        <li>Консольный вывод для отладки конвертации кириллицы</li>
                       </ul>
                     </div>
 
