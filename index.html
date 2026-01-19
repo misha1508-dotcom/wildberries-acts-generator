@@ -362,11 +362,8 @@
   <meta charset="UTF-8">
   <title>Акт приема-передачи</title>
   <style>
-    @media print {
-      @page { size: A4; margin: 0; }
-      body { margin: 1cm; }
-    }
-    body { font-family: Arial, sans-serif; padding: 20px; margin: 0 auto; max-width: 800px; line-height: 1.6; }
+    @page { size: A4; margin: 2cm 2cm 2cm 2cm; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
     table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 8pt; table-layout: fixed; }
     th, td { border: 1px solid black; padding: 4pt 3pt; word-wrap: break-word; overflow-wrap: break-word; vertical-align: top; }
     th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 8pt; }
@@ -383,8 +380,19 @@
     td:nth-child(6) { width: 18%; }
     td:nth-child(7) { width: 14%; text-align: right; }
   </style>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+    </w:WordDocument>
+  </xml>
+  <style>
+    @page { margin: 2cm 2cm 2cm 2cm; }
+  </style>
+  <![endif]-->
 </head>
-<body>
+<body style="margin: 2cm;">
   <p class="date-left"><strong>${formatDate(acceptanceDate)}</strong></p>
   <p class="right-text">Приложение № 1</p>
   <br>
@@ -471,7 +479,8 @@
   <meta charset="UTF-8">
   <title>Акт оказания услуг</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; margin: 0 auto; max-width: 800px; line-height: 1.6; }
+    @page { size: A4; margin: 2cm 2cm 2cm 2cm; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
     table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 8pt; table-layout: fixed; }
     th, td { border: 1px solid black; padding: 4pt 3pt; word-wrap: break-word; overflow-wrap: break-word; vertical-align: top; }
     th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 8pt; }
@@ -489,8 +498,19 @@
     td:nth-child(7) { width: 12%; }
     td:nth-child(8) { width: 12%; text-align: right; }
   </style>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+    </w:WordDocument>
+  </xml>
+  <style>
+    @page { margin: 2cm 2cm 2cm 2cm; }
+  </style>
+  <![endif]-->
 </head>
-<body>
+<body style="margin: 2cm;">
   <p class="date-left"><strong>${formatDate(servicesDate)}</strong></p>
   <p class="right-text">Приложение № 2</p>
   <br>
@@ -569,7 +589,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.8.2
+                  v2.8.3
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -710,6 +730,16 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-cyan-500 pl-4">
+                      <h4 className="font-bold text-cyan-700 mb-1">v2.8.3 - 19.01.2026 04:30 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Полностью переработаны отступы для Word</li>
+                        <li>Добавлены MSO-директивы для корректных полей в Word</li>
+                        <li>Поля страницы: 2см со всех сторон</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-teal-500 pl-4">
                       <h4 className="font-bold text-teal-700 mb-1">v2.8.2 - 19.01.2026 04:15 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
