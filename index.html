@@ -357,15 +357,21 @@
         `).join('');
 
         const html = `<!DOCTYPE html>
-<html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
 <head>
   <meta charset="UTF-8">
   <title>Акт приема-передачи</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
   <style>
-    body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.4; }
-    table.main-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    table.main-table th, table.main-table td { border: 1px solid black; padding: 3px 5px; font-size: 9pt; text-align: left; }
-    table.main-table th { background-color: #f0f0f0; font-weight: bold; text-align: center; }
+    @page { size: A4; margin: 2cm 1.5cm 2cm 2cm; }
+    body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.4; margin: 0; padding: 0; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
@@ -453,15 +459,21 @@
         `).join('');
 
         const html = `<!DOCTYPE html>
-<html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
 <head>
   <meta charset="UTF-8">
   <title>Акт оказания услуг</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
   <style>
-    body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.4; }
-    table.main-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    table.main-table th, table.main-table td { border: 1px solid black; padding: 3px 5px; font-size: 9pt; text-align: left; }
-    table.main-table th { background-color: #f0f0f0; font-weight: bold; text-align: center; }
+    @page { size: A4; margin: 2cm 1.5cm 2cm 2cm; }
+    body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.4; margin: 0; padding: 0; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
@@ -546,7 +558,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.9.5
+                  v2.9.6
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -687,6 +699,17 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-orange-500 pl-4">
+                      <h4 className="font-bold text-orange-700 mb-1">v2.9.6 - 19.01.2026 05:50 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">MSO-директивы для Word:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Добавлены XML namespace для Word (xmlns:w, xmlns:o)</li>
+                        <li>Добавлены MSO условные комментарии для Word</li>
+                        <li>@page директива с размером A4 и полями</li>
+                        <li>body margin: 0 padding: 0 для корректного размещения</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-rose-500 pl-4">
                       <h4 className="font-bold text-rose-700 mb-1">v2.9.5 - 19.01.2026 05:40 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Центрирование таблиц:</p>
