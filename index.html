@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.min.js"></script>
+  <script src="https://unpkg.com/html-docx-js-typescript@1.0.2/dist/html-docx.umd.js"></script>
   <style>
     @media print {
       @page {
@@ -281,6 +281,14 @@
         return true;
       };
 
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      };
+
       const generateAcceptanceAct = () => {
         if (!workbook || !selectedMonth) {
           alert('Ошибка: не выбран Excel файл или месяц');
@@ -324,8 +332,8 @@
     }
     body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; }
     table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 7px; line-height: 0.9; }
-    th, td { border: 1px solid black; padding: 0px 3px; height: 21px; }
-    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; height: 21px; }
+    th, td { border: 1px solid black; padding: 0px 3px; height: 10.5px; }
+    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; height: 10.5px; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
@@ -341,7 +349,7 @@
   </style>
 </head>
 <body>
-  <p class="date-left"><strong>${acceptanceDate}</strong></p>
+  <p class="date-left"><strong>${formatDate(acceptanceDate)}</strong></p>
   <p class="right-text">Приложение № 1</p>
   <br>
   <p class="right-text">к договору по оказанию транспортных услуг</p>
@@ -460,8 +468,8 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.8; }
     table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 7px; line-height: 0.9; }
-    th, td { border: 1px solid black; padding: 0px 3px; height: 21px; }
-    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; height: 21px; }
+    th, td { border: 1px solid black; padding: 0px 3px; height: 10.5px; }
+    th { background-color: #f0f0f0; font-weight: bold; text-align: center; font-size: 7px; height: 10.5px; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
@@ -478,7 +486,7 @@
   </style>
 </head>
 <body>
-  <p class="date-left"><strong>${servicesDate}</strong></p>
+  <p class="date-left"><strong>${formatDate(servicesDate)}</strong></p>
   <p class="right-text">Приложение № 2</p>
   <br>
   <p class="right-text">к договору по оказанию транспортных услуг</p>
@@ -594,7 +602,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.5.2
+                  v2.6.0
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -735,6 +743,20 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-blue-500 pl-4">
+                      <h4 className="font-bold text-blue-700 mb-1">v2.6.0 - 19.01.2026 02:35 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Изменено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Заменена библиотека html-docx-js на html-docx-js-typescript для лучшей поддержки кириллицы</li>
+                        <li>Высота строк таблицы уменьшена с 21px до 10.5px (в 2 раза)</li>
+                        <li>Формат даты в актах изменен на ДД.ММ.ГГГГ</li>
+                      </ul>
+                      <p className="font-semibold text-gray-600 mb-2 mt-2">Исправлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Улучшено отображение кириллицы в DOCX файлах</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-cyan-500 pl-4">
                       <h4 className="font-bold text-cyan-700 mb-1">v2.5.2 - 19.01.2026 02:25 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
