@@ -309,14 +309,14 @@
         const totalPrice = items.reduce((sum, item) => sum + item.totalPrice, 0);
 
         const tableRows = items.map((item, index) => `
-          <tr>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: right; font-size: 7px;">${item.totalPrice.toFixed(2)}</td>
+          <tr style="height: 10.5px;">
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px; height: 10.5px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px; height: 10.5px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: right; font-size: 7px; height: 10.5px;">${item.totalPrice.toFixed(2)}</td>
           </tr>
         `).join('');
 
@@ -448,15 +448,15 @@
         }
 
         const tableRows = items.map((item, index) => `
-          <tr>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px;">${index + 1}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.name}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px;">${item.quantity}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.brand}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.sellerArticle || ''}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.color}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px;">${item.sku}</td>
-            <td style="border: 1px solid black; padding: 0px 2px; text-align: right; font-size: 7px;"></td>
+          <tr style="height: 10.5px;">
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px; height: 10.5px;">${index + 1}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.name}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: center; font-size: 7px; height: 10.5px;">${item.quantity}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.brand}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.sellerArticle || ''}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.color}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; font-size: 7px; height: 10.5px;">${item.sku}</td>
+            <td style="border: 1px solid black; padding: 0px 2px; text-align: right; font-size: 7px; height: 10.5px;"></td>
           </tr>
         `).join('');
 
@@ -566,17 +566,25 @@
         openInGoogleDocs(html, fileName);
       };
 
+      const escapeHtmlForDocx = (text) => {
+        // Конвертируем кириллицу в HTML entities для корректного отображения в DOCX
+        return text.split('').map(char => {
+          const code = char.charCodeAt(0);
+          // Конвертируем кириллицу (коды 1024-1279) и некоторые спецсимволы
+          if (code > 127) {
+            return `&#${code};`;
+          }
+          return char;
+        }).join('');
+      };
+
       const openInGoogleDocs = (html, title) => {
         try {
-          // Добавляем XML декларацию и мета-теги для правильной кодировки
-          const htmlWithEncoding = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
-            html.replace(
-              '<meta charset="UTF-8">',
-              '<meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
-            );
+          // Конвертируем кириллицу в HTML entities
+          const htmlEscaped = escapeHtmlForDocx(html);
 
           // Конвертируем HTML в DOCX
-          const converted = htmlDocx.asBlob(htmlWithEncoding);
+          const converted = htmlDocx.asBlob(htmlEscaped);
 
           // Скачиваем DOCX файл
           const link = document.createElement('a');
@@ -601,7 +609,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.6.1
+                  v2.6.2
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -742,6 +750,16 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-purple-500 pl-4">
+                      <h4 className="font-bold text-purple-700 mb-1">v2.6.2 - 19.01.2026 02:50 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Добавлена функция escapeHtmlForDocx для конвертации кириллицы в HTML entities</li>
+                        <li>Добавлена явная высота строк (10.5px) в inline стилях всех ячеек таблицы</li>
+                        <li>Теперь кириллица корректно отображается в DOCX файлах</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-indigo-500 pl-4">
                       <h4 className="font-bold text-indigo-700 mb-1">v2.6.1 - 19.01.2026 02:40 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
