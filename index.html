@@ -560,8 +560,17 @@
 
       const openInGoogleDocs = (html, title) => {
         try {
-          // Конвертируем HTML в DOCX
-          const converted = htmlDocx.asBlob(html);
+          // Добавляем мета-тег для кодировки в начало HTML
+          const htmlWithEncoding = html.replace(
+            '<meta charset="UTF-8">',
+            '<meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=utf-8">'
+          );
+
+          // Конвертируем HTML в DOCX с опциями
+          const converted = htmlDocx.asBlob(htmlWithEncoding, {
+            orientation: 'portrait',
+            margins: { top: 720, right: 720, bottom: 720, left: 720 }
+          });
 
           // Скачиваем DOCX файл
           const link = document.createElement('a');
@@ -585,7 +594,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.5.1
+                  v2.5.2
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -726,6 +735,15 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-cyan-500 pl-4">
+                      <h4 className="font-bold text-cyan-700 mb-1">v2.5.2 - 19.01.2026 02:25 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Исправлено:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Исправлено отображение кириллицы в DOCX файлах</li>
+                        <li>Добавлены дополнительные мета-теги для правильной кодировки UTF-8</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-teal-500 pl-4">
                       <h4 className="font-bold text-teal-700 mb-1">v2.5.1 - 19.01.2026 02:20 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Добавлено:</p>
