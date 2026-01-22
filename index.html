@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Генератор актов Wildberries</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2300A7E1'/%3E%3Ctext x='50' y='60' font-size='40' font-weight='bold' font-family='Arial, sans-serif' fill='white' text-anchor='middle'%3EM%3C/text%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -325,6 +325,39 @@
   </table>`;
       };
 
+      // Новые реквизиты по образцу (без ОГРНИП и адреса у заказчика)
+      const getRequisitesHtmlNew = () => {
+        return `
+  <table style="border: none; width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 30px;">
+    <tr>
+      <td style="border: none; width: 50%; vertical-align: top; padding: 10px; font-size: 10pt;">
+        <p style="font-weight: bold; margin: 5px 0;">Исполнитель</p>
+        <br>
+        <p style="margin: 5px 0;">Индивидуальный предприниматель Мирошниченко Михаил Михайлович</p>
+        <p style="margin: 5px 0;">ИНН: 771994433911</p>
+        <p style="margin: 5px 0;">Банк: МОСКОВСКИЙ ФИЛИАЛ АО КБ "МОДУЛЬБАНК"</p>
+        <p style="margin: 5px 0;">БИК: 044525092</p>
+        <p style="margin: 5px 0;">к/с: 30101810645250000092</p>
+        <p style="margin: 5px 0;">Счет: 40802810670010452146</p>
+        <br><br>
+        <p style="margin: 5px 0;">_________________________</p>
+      </td>
+      <td style="border: none; width: 50%; vertical-align: top; padding: 10px; font-size: 10pt;">
+        <p style="font-weight: bold; margin: 5px 0;">Заказчик</p>
+        <br>
+        <p style="margin: 5px 0;">Индивидуальный предприниматель<br>Гаряев Руслан Асланович</p>
+        <p style="margin: 5px 0;">ИНН: 910303241077</p>
+        <p style="margin: 5px 0;">Банк: МОСКОВСКИЙ ФИЛИАЛ АО КБ "МОДУЛЬБАНК"</p>
+        <p style="margin: 5px 0;">БИК: 044525092</p>
+        <p style="margin: 5px 0;">к/с: 30101810645250000092</p>
+        <p style="margin: 5px 0;">Счет: 40802810470010467690</p>
+        <br><br>
+        <p style="margin: 5px 0;">_________________________</p>
+      </td>
+    </tr>
+  </table>`;
+      };
+
       const generateAcceptanceAct = () => {
         if (!workbook || !selectedMonth) {
           alert('Ошибка: не выбран Excel файл или месяц');
@@ -346,13 +379,13 @@
 
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="font-size:7pt;text-align:center;word-wrap:break-word;overflow:hidden;">${index + 1}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.name}</td>
-            <td style="font-size:7pt;text-align:center;word-wrap:break-word;overflow:hidden;">${item.quantity}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.brand}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.sellerArticle || ''}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.color}</td>
-            <td style="font-size:7pt;text-align:right;word-wrap:break-word;overflow:hidden;">${item.totalPrice.toFixed(2)}</td>
+            <td style="font-size:7pt;text-align:center;word-wrap:break-word;word-break:break-word;white-space:normal;">${index + 1}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.name}</td>
+            <td style="font-size:7pt;text-align:center;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.quantity}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.brand}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.sellerArticle || ''}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.color}</td>
+            <td style="font-size:7pt;text-align:right;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.totalPrice.toFixed(2)}</td>
           </tr>
         `).join('');
 
@@ -376,7 +409,7 @@
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
     p { margin: 4px 0; }
-    td, th { word-wrap: break-word; overflow: hidden; }
+    td, th { word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; white-space: normal; vertical-align: top; }
   </style>
 </head>
 <body>
@@ -429,6 +462,50 @@
         openInGoogleDocs(html, fileName);
       };
 
+      // Функция для получения периода из названия месяца
+      const getPeriodDates = (monthName) => {
+        const monthMap = {
+          'янв': { month: 0, name: 'января' },
+          'фев': { month: 1, name: 'февраля' },
+          'мар': { month: 2, name: 'марта' },
+          'апр': { month: 3, name: 'апреля' },
+          'май': { month: 4, name: 'мая' },
+          'июн': { month: 5, name: 'июня' },
+          'июл': { month: 6, name: 'июля' },
+          'авг': { month: 7, name: 'августа' },
+          'сен': { month: 8, name: 'сентября' },
+          'окт': { month: 9, name: 'октября' },
+          'ноя': { month: 10, name: 'ноября' },
+          'дек': { month: 11, name: 'декабря' }
+        };
+
+        const lowerMonth = monthName.toLowerCase();
+        let foundMonth = null;
+        let year = 2024;
+
+        // Ищем год в названии
+        const yearMatch = monthName.match(/(\d{2,4})/);
+        if (yearMatch) {
+          year = yearMatch[1].length === 2 ? 2000 + parseInt(yearMatch[1]) : parseInt(yearMatch[1]);
+        }
+
+        // Ищем месяц
+        for (const [key, value] of Object.entries(monthMap)) {
+          if (lowerMonth.includes(key)) {
+            foundMonth = value;
+            break;
+          }
+        }
+
+        if (!foundMonth) return { start: '__________', end: '__________' };
+
+        const lastDay = new Date(year, foundMonth.month + 1, 0).getDate();
+        const startDate = `01.${String(foundMonth.month + 1).padStart(2, '0')}.${year}`;
+        const endDate = `${lastDay}.${String(foundMonth.month + 1).padStart(2, '0')}.${year}`;
+
+        return { start: startDate, end: endDate };
+      };
+
       const generateServicesAct = () => {
         if (!workbook || !selectedMonth) {
           alert('Ошибка: не выбран Excel файл или месяц');
@@ -446,16 +523,24 @@
           return;
         }
 
+        // Стоимость услуг: 60 рублей за единицу товара
+        const serviceCostPerItem = 60;
+        const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+        const totalServiceCost = totalQuantity * serviceCostPerItem;
+
+        // Получаем даты периода
+        const periodDates = getPeriodDates(selectedMonth);
+
         const tableRows = items.map((item, index) => `
           <tr>
-            <td style="font-size:7pt;text-align:center;word-wrap:break-word;overflow:hidden;">${index + 1}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.name}</td>
-            <td style="font-size:7pt;text-align:center;word-wrap:break-word;overflow:hidden;">${item.quantity}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.brand}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.sellerArticle || ''}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.color}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;">${item.sku}</td>
-            <td style="font-size:7pt;word-wrap:break-word;overflow:hidden;"></td>
+            <td style="font-size:7pt;text-align:center;word-wrap:break-word;word-break:break-word;white-space:normal;">${index + 1}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.name}</td>
+            <td style="font-size:7pt;text-align:center;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.quantity}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.brand}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.sellerArticle || ''}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.color}</td>
+            <td style="font-size:7pt;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.sku}</td>
+            <td style="font-size:7pt;text-align:right;word-wrap:break-word;word-break:break-word;white-space:normal;">${item.quantity * serviceCostPerItem}</td>
           </tr>
         `).join('');
 
@@ -474,35 +559,30 @@
   <![endif]-->
   <style>
     @page { size: A4; margin: 2cm 1.5cm 2cm 2cm; }
-    body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.3; margin: 0; padding: 0; }
+    body { font-family: Verdana, Arial, sans-serif; font-size: 11pt; line-height: 1.3; margin: 0; padding: 0; }
     .right-text { text-align: right; }
     .center-text { text-align: center; }
     .bold { font-weight: bold; }
-    p { margin: 4px 0; }
-    td, th { word-wrap: break-word; overflow: hidden; }
+    p { margin: 4px 0; text-align: justify; }
+    td, th { word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; white-space: normal; vertical-align: top; }
   </style>
 </head>
 <body>
-  <p><strong>${formatDate(servicesDate)}</strong></p>
-  <p class="right-text">Приложение № 2</p>
-  <p class="right-text">к договору по оказанию транспортных услуг</p>
-  <p class="right-text">и услуг Фулфилмента №11/3/24 от 11.03.2024</p>
+  <h2 class="center-text">АКТ ОКАЗАНИЯ УСЛУГ ОТ ${formatDate(servicesDate)} г.</h2>
   <br>
-  <h2 class="center-text">АКТ ОКАЗАНИЯ УСЛУГ</h2>
+  <p>Индивидуальный предприниматель Гаряев Руслан Асланович, ИНН 910303241077 именуемый в дальнейшем Заказчик с одной стороны и Индивидуальный предприниматель Мирошниченко Михаил Михайлович, ИНН 771994433911, именуемый в дальнейшем Исполнитель с другой стороны, а совместно именуемые Стороны, заключили настоящий акт, о нижеследующем:</p>
   <br>
-  <p>Индивидуальный предприниматель Гаряев Руслан Асланович, ИНН 910303241077 именуемый в дальнейшем Заказчик с одной стороны и Индивидуальный предприниматель Зверева Юлиана Владимировна, ИНН 623406499402, именуемая в дальнейшем Исполнитель, а совместно именуемые Стороны, заключили настоящий акт, о нижеследующем:</p>
+  <p>1. В рамках исполнения договора по оказанию транспортных услуг и услуг Фулфилмента №11/3/24 от 11.03.2024 г. Исполнитель за период с ${periodDates.start} по ${periodDates.end}, согласно сборочным заданиям, поставил на маркетплейс Wildberries следующие товары:</p>
   <br>
-  <p>1. В рамках исполнения договора по оказанию транспортных услуг и услуг Фулфилмента №11/3/24 от 11.03.2024 г. Исполнитель, согласно сборочным заданиям, поставил на маркетплейс Wildberries следующие товары:</p>
-  <br>
-  <table width="100%" border="1" cellpadding="1" cellspacing="0" align="center" style="border-collapse: collapse; table-layout: fixed; margin: 10px auto;">
+  <table width="104%" border="1" cellpadding="1" cellspacing="0" align="center" style="border-collapse: collapse; table-layout: fixed; margin: 10px auto;">
     <tr>
       <th width="3%" rowspan="2" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">№</th>
       <th colspan="6" style="background-color:#f0f0f0;font-size:7pt;text-align:center;">Товар</th>
-      <th width="8%" rowspan="2" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Сумма</th>
+      <th width="8%" rowspan="2" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Стоимость услуг</th>
     </tr>
     <tr>
       <th width="29%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Наименование</th>
-      <th width="5%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Кол</th>
+      <th width="5%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Кол-во</th>
       <th width="13%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Бренд</th>
       <th width="14%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Артикул</th>
       <th width="14%" style="background-color:#f0f0f0;font-size:7pt;text-align:center;word-wrap:break-word;">Цвет</th>
@@ -511,7 +591,7 @@
     ${tableRows}
     <tr>
       <td colspan="7" style="text-align: right;font-size:7pt;"><strong>Итого</strong></td>
-      <td style="text-align: right;font-size:7pt;"></td>
+      <td style="text-align: right;font-size:7pt;"><strong>${totalServiceCost}</strong></td>
     </tr>
   </table>
   <br>
@@ -519,7 +599,7 @@
   <br>
   <p>3. Настоящий акт является неотъемлемой частью договора по оказанию транспортных услуг и услуг Фулфилмента №11/3/24 от 11.03.2024 г.</p>
   <br><br>
-  ${getRequisitesHtml()}
+  ${getRequisitesHtmlNew()}
 </body>
 </html>`;
 
@@ -560,7 +640,7 @@
                   Генератор актов Wildberries
                 </h1>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  v2.9.7
+                  v3.0.1
                 </span>
               </div>
               <p className="text-gray-600 mb-8">
@@ -701,6 +781,28 @@
                     <span className="ml-auto text-gray-400 group-open:rotate-180 transition-transform">▼</span>
                   </summary>
                   <div className="mt-4 space-y-6 text-sm text-gray-700">
+                    <div className="border-l-4 border-red-500 pl-4">
+                      <h4 className="font-bold text-red-700 mb-1">v3.0.1 - 19.01.2026 22:10 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Исправления:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Исправлена ошибка с переменной в changelog</li>
+                        <li>Улучшен перенос текста в таблицах (word-break, overflow-wrap)</li>
+                      </ul>
+                    </div>
+
+                    <div className="border-l-4 border-red-400 pl-4">
+                      <h4 className="font-bold text-red-600 mb-1">v3.0.0 - 19.01.2026 21:50 МСК</h4>
+                      <p className="font-semibold text-gray-600 mb-2">Новый шаблон акта оказания услуг:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Заголовок: "АКТ ОКАЗАНИЯ УСЛУГ ОТ [дата] г." (без Приложение №2)</li>
+                        <li>Исполнитель: Мирошниченко М.М. вместо Зверевой Ю.В.</li>
+                        <li>Добавлен период "за период с ХХ.ХХ.ХХХХ по ХХ.ХХ.ХХХХ"</li>
+                        <li>Колонка "Стоимость услуг" вместо "Сумма" с расчетом (60 руб/шт)</li>
+                        <li>Обновлены реквизиты (без ОГРНИП и адреса у заказчика)</li>
+                        <li>Шрифт Verdana как в образце</li>
+                      </ul>
+                    </div>
+
                     <div className="border-l-4 border-amber-500 pl-4">
                       <h4 className="font-bold text-amber-700 mb-1">v2.9.7 - 19.01.2026 06:00 МСК</h4>
                       <p className="font-semibold text-gray-600 mb-2">Перенос текста в ячейках:</p>
